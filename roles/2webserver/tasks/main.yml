@@ -1,0 +1,41 @@
+---
+# tasks file for 2http
+- name: install_httpd,php
+  dnf:
+    name: 
+      - httpd
+      - php
+      - php-gd
+      - php-mysqlnd
+      - php-mbstring
+      - php-xml
+      - php-bcmath
+    state: latest
+  notify:
+    - restart_httpd
+
+- name: make_sure_service_httpd_started_and_enabled
+  systemd:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: copy_info.php
+  copy:
+    src: info.php
+    dest: /var/www/html
+    owner: apache
+    group: apache
+    mode: '0644'
+
+- name: edit_line_DirectoryIndex
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: yes
+  with_items:
+    - { regexp: ' +DirectoryIndex index', line: 'DirectoryIndex index.html index.php index.cgi'}
+    - { regexp: 'ServerAdmin root', line: 'ServerAdmin admin@webserver.com'}
+  notify:
+    - restart_httpd

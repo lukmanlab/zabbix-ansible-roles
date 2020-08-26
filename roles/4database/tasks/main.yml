@@ -1,0 +1,56 @@
+---
+# tasks file for 4database
+- name: install_mysql_server_8
+  dnf:
+    name: mysql-server
+    state: present
+
+- name: make_sure_service_mysqld_started_and_enabled
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Adds_Python_MySQL_support_on_RedHat/CentOS
+  yum: 
+    name: python3-PyMySQL
+    state: present
+
+- name: set_root_password_mysql
+  mysql_user:
+    user: root
+    password: "{{ root_pass_mysql }}"
+    host: localhost
+  run_once: true
+  ignore_errors: yes
+
+- name: add_new_database
+  mysql_db:
+    name: "{{ dbname }}"
+    login_user: root
+    login_password: "{{ root_pass_mysql }}"
+    collation: utf8_bin
+    state: present
+
+- name: add_user
+  mysql_user:
+    name: "{{ dbuser }}"
+    password: "{{ dbpass }}"
+    host: "{{ dbhost }}"
+    priv: '{{ dbname }}.*:ALL'
+    login_user: root
+    login_password: "{{ root_pass_mysql }}"
+    state: present
+
+# - name: add_root_user_accessible_anywhere
+#   mysql_user:
+#     user: root
+#     priv: '*.*:ALL,GRANT'
+#     password: "{{ root_pass_mysql }}"
+#     host: '%'
+#     state: absent
+
+# - name: copy_template_.my.cnf.j2
+#   template:
+#     src: .my.cnf.j2
+#     dest: /root/.my.cnf

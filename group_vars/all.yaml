@@ -1,0 +1,11 @@
+# add new database
+dbname: zabbix
+
+# add new user
+dbuser: zabbix
+dbpass: password
+dbhost: 192.168.99.21
+
+# update root password
+root_pass_mysql: P@ssword123
+dbhost_server: 192.168.99.31

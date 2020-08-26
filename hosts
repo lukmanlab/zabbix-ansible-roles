@@ -1,0 +1,7 @@
+[all:vars]
+
+[zabbix]
+zabbix1 ansible_host=192.168.99.21 ansible_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[database]
+database1 ansible_host=192.168.99.31 ansible_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key ansible_ssh_common_args='-o StrictHostKeyChecking=no'

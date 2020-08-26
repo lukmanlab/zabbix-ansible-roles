@@ -1,0 +1,6 @@
+---
+# handlers file for 2http
+- name: restart_httpd
+  service:
+    name: httpd
+    state: restarted

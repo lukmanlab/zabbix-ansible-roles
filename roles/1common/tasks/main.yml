@@ -1,0 +1,17 @@
+---
+# tasks file for 1common
+- name: install_common_packages
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+    - git
+    - curl
+    - zlib
+    - net-tools
+    - mysql       # mysql client
+
+- name: set_timezone_Asia/Jakarta
+  timezone:
+    name: Asia/Jakarta
